@@ -18,6 +18,12 @@ jobs:
         run: |
           f=android/app/src/main/AndroidManifest.xml
           grep -q POST_NOTIFICATIONS $f || sed -i 's#<application#<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <application#' $f
+      - name: Status bar & window gelap dari awal (anti abu-abu)
+        run: |
+          f=android/app/src/main/res/values/styles.xml
+          sed -i 's|<style name="AppTheme.NoActionBar"[^>]*>|&\n        <item name="android:statusBarColor">#0f0f0f</item>\n        <item name="android:navigationBarColor">#0f0f0f</item>\n        <item name="android:windowBackground">#0f0f0f</item>|' $f
+          sed -i 's|<style name="AppTheme"[^>]*>|&\n        <item name="android:statusBarColor">#0f0f0f</item>|' $f
+          cat $f
       - run: npx cap sync android
       - name: Build debug APK
         working-directory: android
